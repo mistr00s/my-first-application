@@ -9,11 +9,16 @@ class JobListing extends Model
 {
     use HasFactory;
 
-    // Allow these fields to be mass-assigned
     protected $fillable = ['title', 'salary', 'employer_id'];
 
     public function employer()
     {
-        return $this->belongsTo(Employer::class);
+        return $this->belongsTo(\App\Models\Employer::class);
+    }
+
+    // 🔹 Add this method
+    public function tags()
+    {
+        return $this->belongsToMany(\App\Models\Tag::class);
     }
 }

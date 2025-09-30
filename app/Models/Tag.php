@@ -5,16 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Employer extends Model
+class Tag extends Model
 {
     use HasFactory;
 
-    // Allow "name" to be mass-assigned
     protected $fillable = ['name'];
 
-    public function jobs()
+    public function jobListings()
 {
-    return $this->hasMany(\App\Models\JobListing::class);
+    return $this->belongsToMany(\App\Models\JobListing::class);
 }
 
 }
