@@ -5,7 +5,7 @@ use App\Models\JobListing;
 
 Route::get('/jobs', function () {
     return view('jobs', [
-        'jobs' => JobListing::with(['employer', 'tags'])->get()
+        'jobs' => \App\Models\JobListing::with(['employer', 'tags'])->paginate(5)
     ]);
 });
 
