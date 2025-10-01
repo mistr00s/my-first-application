@@ -7,6 +7,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 text-gray-900">
+    @if(session('success'))
+    <div class="bg-green-100 text-green-800 px-4 py-2 rounded mb-4 max-w-7xl mx-auto">
+        {{ session('success') }}
+    </div>
+@endif
+
 
 <!-- Navbar -->
 <nav class="bg-white shadow-md">

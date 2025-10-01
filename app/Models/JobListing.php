@@ -9,16 +9,18 @@ class JobListing extends Model
 {
     use HasFactory;
 
+    // Mass assignment protection
     protected $fillable = ['title', 'salary', 'employer_id'];
 
+    // A JobListing belongs to an Employer
     public function employer()
     {
-        return $this->belongsTo(\App\Models\Employer::class);
+        return $this->belongsTo(Employer::class);
     }
 
-    // 🔹 Add this method
+    // A JobListing can have many Tags (many-to-many)
     public function tags()
     {
-        return $this->belongsToMany(\App\Models\Tag::class);
+        return $this->belongsToMany(Tag::class);
     }
 }

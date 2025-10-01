@@ -1,17 +1,25 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Models\JobListing;
+use App\Http\Controllers\JobController;
 
-Route::get('/jobs', function () {
-    return view('jobs', [
-        'jobs' => \App\Models\JobListing::with(['employer', 'tags'])->paginate(5)
-    ]);
-});
+// All Jobs
+Route::get('/jobs', [JobController::class, 'index']);
 
-Route::get('/jobs/{id}', function ($id) {
-    return view('job', [
-        'job' => JobListing::with(['employer', 'tags'])->findOrFail($id)
-    ]);
-});
+// Show Create Job Form
+Route::get('/jobs/create', [JobController::class, 'create']);
 
+// Store New Job
+Route::post('/jobs', [JobController::class, 'store']);
+
+// Single Job (Route Model Binding)
+Route::get('/jobs/{job}', [JobController::class, 'show']);
+
+// Show Edit Job Form
+Route::get('/jobs/{job}/edit', [JobController::class, 'edit']);
+
+// Update Job
+Route::put('/jobs/{job}', [JobController::class, 'update']);
+
+// Delete Job
+Route::delete('/jobs/{job}', [JobController::class, 'destroy']);
