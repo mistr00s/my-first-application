@@ -3,6 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobController;
 
+Route::get('/', function () {
+    return view('home');
+});
+// Resource
+Route::resource('jobs', JobController::class);
+
 // All Jobs
 Route::get('/jobs', [JobController::class, 'index']);
 

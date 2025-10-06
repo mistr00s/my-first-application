@@ -9,14 +9,8 @@ class JobController extends Controller
 {
     public function index()
     {
-        return view('jobs.index', [
-            'jobs' => JobListing::with(['employer', 'tags'])->paginate(10)
-        ]);
-    }
-
-    public function show(JobListing $job)
-    {
-        return view('jobs.show', ['job' => $job]);
+        $jobs = JobListing::with('employer')->paginate(10);
+        return view('jobs.index', compact('jobs'));
     }
 
     public function create()
@@ -27,48 +21,45 @@ class JobController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title'       => 'required|min:3|max:255',
-            'salary'      => 'required',
-            'employer_id' => 'required|exists:employers,id',
-            'tags'        => 'array',
-            'tags.*'      => 'exists:tags,id',
+            'title' => 'required',
+            'company' => 'required',
+            'location' => 'required',
+            'description' => 'required',
         ]);
 
-        $job = JobListing::create([
-            'title'       => $validated['title'],
-            'salary'      => $validated['salary'],
-            'employer_id' => $validated['employer_id'],
-        ]);
+        Job::create($validated);
 
-        if (!empty($validated['tags'])) {
-            $job->tags()->attach($validated['tags']);
-        }
-
-        return redirect('/jobs')->with('success', 'Job created successfully!');
+        return redirect()->route('jobs.index')->with('message', 'Job created successfully!');
     }
 
-    public function edit(JobListing $job)
+    public function show(Job $job)
     {
-        return view('jobs.edit', ['job' => $job]);
+        return view('jobs.show', compact('job'));
     }
 
-    public function update(Request $request, JobListing $job)
+    public function edit(Job $job)
+    {
+        return view('jobs.edit', compact('job'));
+    }
+
+    public function update(Request $request, Job $job)
     {
         $validated = $request->validate([
-            'title'       => 'required|min:3|max:255',
-            'salary'      => 'required',
-            'employer_id' => 'required|exists:employers,id',
+            'title' => 'required',
+            'company' => 'required',
+            'location' => 'required',
+            'description' => 'required',
         ]);
 
         $job->update($validated);
 
-        return redirect('/jobs/' . $job->id)->with('success', 'Job updated successfully!');
+        return redirect()->route('jobs.index')->with('message', 'Job updated successfully!');
     }
 
-    public function destroy(JobListing $job)
+    public function destroy(Job $job)
     {
         $job->delete();
 
-        return redirect('/jobs')->with('success', 'Job deleted successfully!');
+        return redirect()->route('jobs.index')->with('message', 'Job deleted successfully!');
     }
 }
